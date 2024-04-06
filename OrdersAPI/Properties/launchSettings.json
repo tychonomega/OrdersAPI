@@ -1,0 +1,43 @@
+{
+  "profiles": {
+    "api_csharp_aspnet_hello_world": {
+      "commandName": "Project",
+      "launchUrl": "http://localhost:4040/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:4040/"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "httpPort": 6060,
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "http://+:6060",
+        "MongoDB__ConnectionString": "mongodb://root:example@host.docker.internal:27017/",
+        "MongoDB__Database": "Orders"
+
+      },
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:12814",
+      "sslPort": 44366
+    }
+  }
+}
