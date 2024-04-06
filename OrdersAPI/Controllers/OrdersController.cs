@@ -3,8 +3,10 @@ using App.Data.Models;
 using App.Models.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,6 +18,7 @@ namespace App.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public OrdersController(IOrderRepository orderRepository, IMapper mapper)
         {
@@ -28,11 +31,11 @@ namespace App.Controllers
         [Authorize]
         public IEnumerable<GetOrderDto> Get()
         {
-            IEnumerable<Order> ordersToReturn = _orderRepository.GetAllOrders();
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            
+            IEnumerable<Order> ordersToReturn = _orderRepository.GetAllOrders(userId);
+                        
             return _mapper.Map<IEnumerable<Order>, IEnumerable<GetOrderDto>>(ordersToReturn);
-
         }
 
         // GET api/<OrdersController>/5
@@ -48,6 +51,10 @@ namespace App.Controllers
         {
             Order orderToCreate = _mapper.Map<Order>(order);
 
+            // This would be improved in a production with an entire model/persistance for User data.
+            // For simplicity in this exercise, just scrape the claim and use that as the "unique" user identifier.
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            orderToCreate.User = userId;
 
             _orderRepository.Create(orderToCreate);
         }

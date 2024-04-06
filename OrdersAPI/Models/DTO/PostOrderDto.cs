@@ -1,12 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using App.Data.Models;
 
 namespace App.Models.DTO
 {
     public class PostOrderDto
     {
-
-        public string ItemName { get; set; } = "";
-        public int quantity { get; set; }
+        public IEnumerable<OrderItem> Items { get; set; } = Enumerable.Empty<OrderItem>();
     }
 }

@@ -9,7 +9,8 @@ namespace App.Data.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
-        public string ItemName { get; set; } = "";
-        public int quantity { get; set; }
+        public IEnumerable<OrderItem>? Items { get; set; }
+        public string User { get; set; } = string.Empty;
+      
     }
 }

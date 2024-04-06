@@ -5,7 +5,7 @@ namespace App.Data
 {
     public interface IOrderRepository
     {
-        IEnumerable<Order> GetAllOrders();
+        IEnumerable<Order> GetAllOrders(string userId);
         Order GetOrderById(string id);
         void Create(Order order);
         bool Update(Order order);

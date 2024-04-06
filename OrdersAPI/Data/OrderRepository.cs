@@ -23,9 +23,9 @@ namespace App.Data
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Order> GetAllOrders()
+        public IEnumerable<Order> GetAllOrders(string userId)
         {
-            return _orderContext.Orders.Find(_ => true).ToList();
+            return _orderContext.Orders.Find(o => o.User.Equals(userId)).ToList();
         }
 
         public Order GetOrderById(string id)
