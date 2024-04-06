@@ -39,10 +39,23 @@ class ErrorHandlerMiddleware
 
     private async Task HandleException(HttpContext context, Exception ex)
     {
-        context.Response.StatusCode = 500;
-        await context.Response.WriteAsJsonAsync(new {
-            message = "Internal Server Error."
+        if (ex is InvalidDataException)
+        {
+            //This could be standardized, quick and dirty to make the point.
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                message = "Invalid Data",
+                detail = ex.Message
+            });
+        }
+        else {
+
+            context.Response.StatusCode = 500;
+            await context.Response.WriteAsJsonAsync(new {
+                message = "Internal Server Error." 
         });
+    }
     }
 }
 

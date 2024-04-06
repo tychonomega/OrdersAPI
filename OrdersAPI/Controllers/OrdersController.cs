@@ -38,14 +38,14 @@ namespace App.Controllers
         }
 
         // GET api/<OrdersController>/6610c2d857538fcb2f444f47
-        [HttpGet("{id}")]
+        [HttpGet("{orderId}")]
         [Authorize]
-        public GetOrderDto Get(string id)
+        public GetOrderDto Get(string orderId)
         {
-            // We could do more here with validation, I jsut checked to see if it could be formatted as an Object Id to handle an exception
+            // We could do more here with validation, I just checked to see if it could be formatted as an Object Id to handle an exception
             // down the line if it fails to convert.  If it is not a valid object id, they didnt get it from us, so return null seems good
             // enough for my time constraints.  Could result in a "false" 200 response, but need requirements to do anything useful with this scenario.
-            bool idIsValid = ObjectId.TryParse(id, out var _);
+            bool idIsValid = ObjectId.TryParse(orderId, out var _);
 
             if(!idIsValid)
             {
@@ -54,7 +54,7 @@ namespace App.Controllers
 
             //Pull user from auth layer, and never the request data
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Order orderToReturn = _orderRepository.GetOrderById(id, userId);
+            Order orderToReturn = _orderRepository.GetOrderById(orderId, userId);
             GetOrderDto dtoToReturn = _mapper.Map<Order, GetOrderDto>(orderToReturn);
             return dtoToReturn;
 
@@ -62,6 +62,7 @@ namespace App.Controllers
 
         // POST api/<OrdersController>
         [HttpPost]
+        [Authorize]
         public void Post([FromBody][Required] PostOrderDto order)
         {
             Order orderToCreate = _mapper.Map<Order>(order);
@@ -75,9 +76,16 @@ namespace App.Controllers
         }
 
         // PUT api/<OrdersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{orderId}")]
+        [Authorize]
+        public void Put(string orderId, [FromBody] IEnumerable<OrderItem> items)
         {
+            if (!items.Any()) {
+                throw new InvalidDataException("Items cannot be empty for an update, delete the order instead.");
+            }
+
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            _orderRepository.Update(orderId, userId, items);
         }
 
         // DELETE api/<OrdersController>/5

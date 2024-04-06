@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using OrdersAPI.Main;
 using System.Net;
+using System.Text;
 
 namespace OrdersAPI.UnitTests.Systems.Controllers
 {
@@ -81,6 +82,19 @@ namespace OrdersAPI.UnitTests.Systems.Controllers
 
             // Assert
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PutReturnUnauthorized()
+        {
+            // Arrange
+            var _client = _factory.CreateClient();
+
+            // Act
+            var response = await _client.PutAsync("/api/Orders/6610c2d857538fcb2f444f47", new StringContent("[]", Encoding.UTF8, "application/json"));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
     }
 }
