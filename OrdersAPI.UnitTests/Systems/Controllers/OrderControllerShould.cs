@@ -24,9 +24,11 @@ namespace OrdersAPI.UnitTests.Systems.Controllers
         }
 
         [Fact]
-        public async Task ReturnUnauthorized()
+        public async Task GetAllReturnUnauthorized()
         {
+            // Arrange
             var _client = _factory.CreateClient();
+
             // Act
             var response = await _client.GetAsync("/api/Orders");
             
@@ -35,13 +37,14 @@ namespace OrdersAPI.UnitTests.Systems.Controllers
         }
 
         [Fact]
-        public async Task ReturnOK()
+        public async Task GetAllReturnOK()
         {
             // Arrange
             var _client = _factory.CreateClient();
             _client.DefaultRequestHeaders.Add("X-Integration-Testing", "abcde-12345");
             _client.DefaultRequestHeaders.Add("Authorization", "Bearer abcde-12345");
-                        
+            _client.DefaultRequestHeaders.Add("userId", "User1");
+
             // Act
             var response = await _client.GetAsync("/api/Orders");
 
@@ -49,6 +52,35 @@ namespace OrdersAPI.UnitTests.Systems.Controllers
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetSingleReturnUnauthorized()
+        {
+            // Arrange
+            var _client = _factory.CreateClient();
+
+            // Act
+            var response = await _client.GetAsync("/api/Orders/6610c2d857538fcb2f444f47");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetSingleReturnNoContentForRandomItem()
+        {
+            // Arrange
+
+            var _client = _factory.CreateClient();
+            _client.DefaultRequestHeaders.Add("X-Integration-Testing", "abcde-12345");
+            _client.DefaultRequestHeaders.Add("Authorization", "Bearer abcde-12345");
+            _client.DefaultRequestHeaders.Add("userId", "User1");
+            // Act
+            var response = await _client.GetAsync("/api/Orders/6610c2d857538fcb2f444f47");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
     }
 }

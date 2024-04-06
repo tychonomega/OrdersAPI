@@ -28,9 +28,12 @@ namespace App.Data
             return _orderContext.Orders.Find(o => o.User.Equals(userId)).ToList();
         }
 
-        public Order GetOrderById(string id)
+        public Order GetOrderById(string id, string userId)
         {
-            throw new NotImplementedException();
+            // ID is coming from the database in this instance, and is a required field, o.Id cannot be null
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            return _orderContext.Orders.Find(o => o.User.Equals(userId) && o.Id.Equals(id)).SingleOrDefault();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         public bool Update(Order order)

@@ -55,7 +55,7 @@ namespace OrdersAPI.UnitTests.Systems.Controllers
             var _client = _factory.CreateClient();
             _client.DefaultRequestHeaders.Add("X-Integration-Testing", "abcde-12345");
             _client.DefaultRequestHeaders.Add("Authorization", "Bearer abcde-12345");
-
+            _client.DefaultRequestHeaders.Add("userId", "User1");
             // Act
             var response = await _client.GetAsync("/api/messages/protected");
             response.EnsureSuccessStatusCode();

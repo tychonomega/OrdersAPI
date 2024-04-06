@@ -26,7 +26,8 @@ namespace App.Middlewares
 
                     var claimsIdentity = new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Authentication, token)
+                    new Claim(ClaimTypes.Authentication, token),
+                    new Claim(ClaimTypes.NameIdentifier, context.Request.Headers["userId"].First())
                 }, TestingAccessTokenAuthentication);
 
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

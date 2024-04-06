@@ -5,10 +5,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace App.Controllers
 {
@@ -34,15 +33,31 @@ namespace App.Controllers
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             IEnumerable<Order> ordersToReturn = _orderRepository.GetAllOrders(userId);
-                        
+
             return _mapper.Map<IEnumerable<Order>, IEnumerable<GetOrderDto>>(ordersToReturn);
         }
 
-        // GET api/<OrdersController>/5
+        // GET api/<OrdersController>/6610c2d857538fcb2f444f47
         [HttpGet("{id}")]
-        public string Get(int id)
+        [Authorize]
+        public GetOrderDto Get(string id)
         {
-            return "value";
+            // We could do more here with validation, I jsut checked to see if it could be formatted as an Object Id to handle an exception
+            // down the line if it fails to convert.  If it is not a valid object id, they didnt get it from us, so return null seems good
+            // enough for my time constraints.  Could result in a "false" 200 response, but need requirements to do anything useful with this scenario.
+            bool idIsValid = ObjectId.TryParse(id, out var _);
+
+            if(!idIsValid)
+            {
+                return null;
+            }
+
+            //Pull user from auth layer, and never the request data
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Order orderToReturn = _orderRepository.GetOrderById(id, userId);
+            GetOrderDto dtoToReturn = _mapper.Map<Order, GetOrderDto>(orderToReturn);
+            return dtoToReturn;
+
         }
 
         // POST api/<OrdersController>
