@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrdersAPI", "OrdersAPI\Orde
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrdersAPI.UnitTests", "OrdersAPI.UnitTests\OrdersAPI.UnitTests.csproj", "{EE0DD797-E7AE-4FBC-8373-2A4146AF582B}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D74FF7DC-EBA1-4BBA-AAB7-26CA9D4CF8B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EE0DD797-E7AE-4FBC-8373-2A4146AF582B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE0DD797-E7AE-4FBC-8373-2A4146AF582B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE0DD797-E7AE-4FBC-8373-2A4146AF582B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D74FF7DC-EBA1-4BBA-AAB7-26CA9D4CF8B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D74FF7DC-EBA1-4BBA-AAB7-26CA9D4CF8B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D74FF7DC-EBA1-4BBA-AAB7-26CA9D4CF8B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D74FF7DC-EBA1-4BBA-AAB7-26CA9D4CF8B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

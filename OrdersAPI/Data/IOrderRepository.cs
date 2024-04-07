@@ -9,6 +9,6 @@ namespace App.Data
         Order GetOrderById(string orderId, string userId);
         void Create(Order order);
         bool Update(string orderId, string userId, IEnumerable<OrderItem> items);
-        bool Delete(string id);
+        bool Delete(string orderId, string userId);
     }
 }

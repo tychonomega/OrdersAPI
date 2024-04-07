@@ -5,6 +5,8 @@ using App.Services;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 
@@ -128,8 +130,23 @@ namespace OrdersAPI.Main
             app.UseAuthorization();
 
 
+            CheckDBInitialization(builder.Configuration);
 
             app.Run();
+        }
+
+        /// <summary>
+        /// This method, in a true production application would be replaced with CI/CD/InventoryManagement/DeploymentProcess (however it is done).
+        /// this runs at startup to initialize the DB if needed, only due to time constraints for the coding exercise.  Not a good practice, but not the worst way to start
+        /// an imaginary solution.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private static void CheckDBInitialization(ConfigurationManager configuration)
+        {
+            string dbConnectionString = configuration.GetSection("MongoDB:ConnectionString").Value;
+            string database = configuration.GetSection("MongoDB:Database").Value;
+
+
         }
     }
 }

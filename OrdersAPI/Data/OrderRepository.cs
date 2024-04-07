@@ -19,9 +19,16 @@ namespace App.Data
            _orderContext.Orders.InsertOne(order);                                                      
         }
 
-        public bool Delete(string id)
+        public bool Delete(string orderId, string userId)
         {
-            throw new NotImplementedException();
+            DeleteResult deleteResult = _orderContext.Orders.DeleteOne(o => o.User == userId && o.Id == orderId);
+
+            if(deleteResult.DeletedCount > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public IEnumerable<Order> GetAllOrders(string userId)
@@ -41,7 +48,7 @@ namespace App.Data
         {
             // Creates a filter for the Order to update by id
             var filter = Builders<Order>.Filter
-                .Eq(o => o.Id, orderId);
+                .Where(o => o.Id.Equals(orderId) && o.User.Equals(userId));
             // what to update
             var update = Builders<Order>.Update
                 .Set(o => o.Items, items)

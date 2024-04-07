@@ -84,14 +84,39 @@ namespace App.Controllers
                 throw new InvalidDataException("Items cannot be empty for an update, delete the order instead.");
             }
 
+            // We could do more here with validation, I just checked to see if it could be formatted as an Object Id to handle an exception
+            // down the line if it fails to convert.  If it is not a valid object id, they didnt get it from us, so return null seems good
+            // enough for my time constraints.  Could result in a "false" 200 response, but need requirements to do anything useful with this scenario.
+
+            bool idIsValid = ObjectId.TryParse(orderId, out var _);
+
+            if (!idIsValid)
+            {
+                return;
+            }
+
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             _orderRepository.Update(orderId, userId, items);
         }
 
         // DELETE api/<OrdersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{orderId}")]
+        [Authorize]
+        public void Delete(string orderId)
         {
+            // We could do more here with validation, I just checked to see if it could be formatted as an Object Id to handle an exception
+            // down the line if it fails to convert.  If it is not a valid object id, they didnt get it from us, so return null seems good
+            // enough for my time constraints.  Could result in a "false" 200 response, but need requirements to do anything useful with this scenario.
+              bool idIsValid = ObjectId.TryParse(orderId, out var _);
+
+            if (!idIsValid)
+            {
+                return;
+            }
+
+
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            _orderRepository.Delete(orderId, userId);
         }
     }
 }

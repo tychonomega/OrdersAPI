@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
+/// <summary>
+/// Basic Controller to verify auth functionality
+/// </summary>
 [ApiController]
 [Route("api/messages")]
 public class MessagesController : ControllerBase
